@@ -7,7 +7,6 @@ const typeDefs = `#graphql
         questions: [Question!]
     }
     type Question { 
-        id: ID!
         question: String!
         options: [String!]!
         correctAnswer: String!
@@ -32,8 +31,8 @@ const typeDefs = `#graphql
 
     type Mutation {
         updateScore(quizId: ID!, userName: String!, score: Int!): Status
-        createQuiz(id: ID!, title: String!): Status
-        createQuestion(id:ID!, quesion: String!, correctAnswer: String!, options: [String!]!): Status
+        createQuiz(title: String!): Status
+        createQuestion(quizId:ID!, question: String!, correctAnswer: String!, options: [String!]!): Status
     }
 
     enum Status {
