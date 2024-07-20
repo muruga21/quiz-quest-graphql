@@ -1,39 +1,64 @@
 import data from '../data/Quiz.json' assert { type: 'json' };
+import { Quiz } from '../models/Quiz.js';
+import { Scores } from '../models/Scores.js';
+import { Question } from '../models/Question.js';
 
 const resolvers = {
     Query : {
-        Quizzes: () => data.quizzes,
-        Quiz: (_, {id}) => data.quizzes.find((quiz)=> quiz.id === id),
-        // Quiz (_, {id}) {
-        //     return data.quizzes.find((quiz)=>{
-        //         (quiz.id === id)
-        //     })
-        // },
-        Users: () => data.users,
-        User: (_, {displayName}) => data.users.find((user)=> user.displayName === displayName),
-        Scores: (_, {quizId}) => data.scores.filter((score)=> score.quizId === quizId)
+        Quizzes: async () => await Quiz.find().populate('questions'),
+        Quiz: async (_, {id}) => {
+          return await Quiz.findById(id);
+        },
+        Users: async () => await User.find(),
+        User: async (_, {displayName}) => await User.findOne({ displayName }),
+        Scores: async (_, {quizId}) => await Scores.find({ quizId })
     },
 
     Quiz : {
-        questions: (parent)=> data.questions.filter((quesion)=> quesion.quizId === parent.id)
+        questions: async(parent)=> {
+          console.log(parent.id);
+          return await Question.find({ quiz: parent.id })
+        }
     },
 
     Mutation : {
-        updateScore: (_, {quizId, userName, score}) => {
-            data.scores.forEach((scr)=>{
-                if(scr.quizId === quizId && scr.userName === userName){
-                    scr.score = score;
-                }
-            })
-            return "SUCCESS"
+        updateScore: async(_, {quizId, userName, score}) => {
+            try {
+                await Scores.findOneAndUpdate({ quizId, userName }, { score }, { upsert: true });
+                return 'SUCCESS';
+              } catch (error) {
+                console.error(error);
+                return 'FAILED';
+              }
         },
-        createQuiz: ( _, {id, title}) => {
-            data.quizzes.push({
-                id: id,
-                title: title
-            })
-            return "SUCCESS"
-        }
+        createQuiz: async (_, { title }) => {
+            try {
+              await Quiz.create({ title });
+              return 'SUCCESS';
+            } catch (error) {
+              console.error(error);
+              return 'FAILED';
+            }
+          },
+
+          createQuestion: async (_, { quizId, question, correctAnswer, options }) => {
+            try {
+              const quiz = await Quiz.findOne({ _id:quizId });
+              if (!quiz) {
+                console.log(quiz)
+                return 'FAILED';
+              }
+              console.log("check")
+              const newQuestion = new Question({ question, correctAnswer, options, quiz: quizId });
+                await newQuestion.save();
+                // quiz.questions.push(newQuestion._id);
+                // await quiz.save();
+              return 'SUCCESS';
+            } catch (error) {
+              console.error(error);
+              return 'FAILED';
+            }
+          }
     }
 
 }
