@@ -1,0 +1,67 @@
+{
+  "quizzes": [
+    {
+      "id": "1",
+      "title": "General Knowledge Quiz"
+    },
+    {
+      "id": "2",
+      "title": "Science Quiz"
+    }
+  ],
+  "questions": [
+    {
+      "id": "1",
+      "question": "What is the capital of France?",
+      "options": ["Paris", "London", "Rome", "Berlin"],
+      "correctAnswer": "Paris",
+      "quizId": "1"
+    },
+    {
+      "id": "2",
+      "question": "Which planet is known as the Red Planet?",
+      "options": ["Earth", "Mars", "Jupiter", "Venus"],
+      "correctAnswer": "Mars",
+      "quizId": "1"
+    },
+    {
+      "id": "3",
+      "question": "What is the chemical symbol for water?",
+      "options": ["O2", "H2O", "CO2", "NaCl"],
+      "correctAnswer": "H2O",
+      "quizId": "2"
+    },
+    {
+      "id": "4",
+      "question": "What planet is closest to the sun?",
+      "options": ["Mercury", "Venus", "Earth", "Mars"],
+      "correctAnswer": "Mercury",
+      "quizId": "2"
+    }
+  ],
+  "users": [
+    {
+      "displayName": "Alice"
+    },
+    {
+      "displayName": "Bob"
+    }
+  ],
+  "scores": [
+    {
+      "quizId": "1",
+      "userName": "Alice",
+      "score": 10
+    },
+    {
+      "quizId": "1",
+      "userName": "Bob",
+      "score": 8
+    },
+    {
+      "quizId": "2",
+      "userName": "Alice",
+      "score": 9
+    }
+  ]
+}
