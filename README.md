@@ -37,6 +37,7 @@ Quiz Quest is a GraphQL-based backend for managing quizzes, questions, users, an
 # Queries
 
 # Get all quizzes
+```
 query GetAllQuizzes {
   Quizzes {
     id
